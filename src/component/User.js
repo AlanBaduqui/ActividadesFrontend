@@ -21,7 +21,10 @@ export default class User extends Component {
 
     state = {
         usuarios: [],
-        rfc8: ''
+        rfc8: '',
+        admi: '',
+        problema: '',
+        descri:''
     }
 
     async componentDidMount() {
@@ -30,16 +33,41 @@ export default class User extends Component {
         console.log(this.state.usuarios)
     }
 
-    onChange = (e) => {
+    onChangeRfc8 = (e) => {
         this.setState({
             rfc8: e.target.value
         })
         console.log(e.target.value)
     }
 
+    onChangeAdmi = (e) => {
+        this.setState({
+            admi: e.target.value
+        })
+        console.log(e.target.value)
+    }
+
+    onChangeProb = (e) => {
+        this.setState({
+            problema: e.target.value
+        })
+        console.log(e.target.value)
+    }
+
+    onChangeDescri = (e) => {
+        this.setState({
+            descri: e.target.value
+        })
+        console.log(e.target.value)
+    }
+
     onFinish = async e => {
         const res = await axios.post('http://localhost:4000/api/usuarios', {
-            rfc8: this.state.rfc8
+            id: 0,
+            rfc8: this.state.rfc8,
+            admi: this.state.admi,
+            problema: this.state.problema,
+            descri: this.state.descri
 
         })
         console.log(res)
@@ -50,15 +78,15 @@ export default class User extends Component {
             <Fragment>
                 <div>
                     <Card>
-                        <Form onSubmit={this.onFinish}>
+                        <Form >
                             <FormItem label="RFC8">
-                                <Input name='rfc8' placeholder="Ingresa tu RFC8" onChange={this.onChange} />
+                                <Input name='rfc8' placeholder="Ingresa tu RFC8" onChange={this.onChangeRfc8} />
                             </FormItem>
-                            <FormItem label="Administración">
+                            <FormItem label="Administración" onChange={this.onChangeAdmi}>
                                 <Input name='admi' placeholder="Ingresa tu Administración" />
                             </FormItem>
                             <FormItem>
-                                <Radio.Group name="problema">
+                                <Radio.Group name="problema" onChange={this.onChangeProb}>
                                     <Radio value={"Impresora"}>Impresora</Radio>
                                     <Radio value={'Telefono'}>Telefono</Radio>
                                     <Radio value={'Comunicación'}>Comunicación</Radio>
@@ -67,10 +95,10 @@ export default class User extends Component {
                                 </Radio.Group>
                             </FormItem>
                             <FormItem label="Descripción">
-                                <Input.TextArea name="descri" />
+                                <Input.TextArea name="descri" onChange={this.onChangeDescri}/>
                             </FormItem>
                             <FormItem>
-                                <Button type="primary" size="large" htmlType="submit">Enviar</Button>
+                                <Button type="primary" size="large" htmlType="submit" onClick={async ()=> this.onFinish()}>Enviar</Button>
                             </FormItem>
                         </Form>
                     </Card>
